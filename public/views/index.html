@@ -1,133 +1,55 @@
-<!doctype html>
-<html lang="ja">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <title>Todoアプリ</title>
-  </head>
-  <body>
-   
+<!DOCTYPE html>
 <html>
   <head>
-   
-    <link rel="stylesheet" href="../../stylesheets/style.css" />
+    <meta charset="utf-8" />
+    <title>Todoアプリ</title>
+    <link rel="stylesheet" href="../views/style.css" />
   </head>
   <body>
-    <style>
-      table {
-        margin-top: 20px;
-      }
-    </style>
+   
+    <h1 class="title">Todo List</h1>
+    <div class="register">
+     <ul class="todo js-addTask-target">
+     </ul>
+     <form>
+      <input class="js-addTask-value" type="text" />
+      <input type="date" name="calendar" class="js-addTask-value" max="9999-12-31">
+      <button class="js-addTask-trigger" type="button">タスクを登録する</button>
+     </form>
+   </div>
+   <script src="../../javascripts/index.js"></script>
+   <script>
+     'use strict';
+const addTaskTrigger = document.getElementsByClassName('js-addTask-trigger')[0];
+const addTaskTarget = document.getElementsByClassName('js-addTask-target')[0];
+const addTaskValue = document.getElementsByClassName('js-addTask-value')[0];
+const removeTask = removeButton => {
+  const targetTask = removeButton.closest('li');
+  addTaskTarget.removeChild(targetTask);
+};
+const addTask = task => {
+  const listItem = document.createElement('li');
+  const removeButton = document.createElement('button');
+  removeButton.innerText = '削除';
+  removeButton.addEventListener('click', () => removeTask(removeButton));
+  listItem.innerText = task;
+  listItem.append(removeButton);
+  addTaskTarget.appendChild(listItem);
+};
+addTaskTrigger.addEventListener('click', event => {
+  const task = addTaskValue.value;
+  addTask(task);
+  addTaskValue.value = '';
+});
 
-    <button id="create-button">+新規登録</button>
-    <div class="create-form" id="create-form" style="display: none">
-      <form>
-        <label for="taskName">タスク名</label>
-        <input type="text" id="taskName" name="taskName" />
-        <label for="deadline">期限</label>
-        <input type="text" id="deadline" name="deadline" />
-        <label for="category">カテゴリ</label>
-        <select id="category" name="category">
-          <option value="1">生活</option>
-          <option value="2">勉強</option>
-          <option value="3">仕事</option>
-          <option value="4">趣味</option>
-        </select>
-      </form>
+   </script>
 
-      <button class="display-none">キャンセル</button>
-      <button class="display-none" id="create-task">登録</button>
-    </div>
-    <table border="1">
-      <tr>
-        <th>タスク</th>
-        <th>期限</th>
-        <th>更新</th>
-        <th>削除</th>
-      </tr>
-
-      <tr>
-        <td>犬の散歩をする</td>
-        <td>2022/4/12</td>
-        <td><button class="update-button">更新</button></td>
-        <td>
-          <button class="delete" data-delete="犬の散歩をする">削除</button>
-        </td>
-      </tr>
-
-      <tr>
-        <td>勉強をする</td>
-        <td>2022/4/12</td>
-        <td><button class="update-button">更新</button></td>
-        <td><button class="delete" data-delete="勉強をする">削除</button></td>
-      </tr>
-    </table>
-
-    <div class="update-form" id="update-form" style="display: none">
-      <form>
-        <label for="taskName">タスク名</label>
-        <input type="text" id="taskName" name="taskName" />
-        <label for="deadline">期限</label>
-        <input type="text" id="deadline" name="deadline" />
-        <label for="category">カテゴリ</label>
-        <select id="category" name="category">
-          <option value="1">生活</option>
-          <option value="2">勉強</option>
-          <option value="3">仕事</option>
-          <option value="4">趣味</option>
-        </select>
-        <label for="status">ステータス</label>
-        <select id="status" name="status">
-          <option value="1">完了</option>
-          <option value="2">作業中</option>
-          <option value="3">未実施</option>
-        </select>
-      </form>
-
-      <button class="display-none">キャンセル</button>
-      <button class="display-none" id="udpate-task">保存</button>
-
+   
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"
     ></script>
 
-    <script>
-      // 削除ボタン押下時
-      $(".delete").on("click", function () {
-        const taskName = $(this).data("delete");
-        alert(`下記の内容を削除します。\n ${taskName}`);
-      });
-
-      // 新規登録ボタン押下時
-      $("#create-button").on("click", function () {
-        $("#create-form").show();
-      });
-
-      // 更新ボタン押下時
-      $(".update-button").on("click", function () {
-        $("#update-form").show();
-      });
-
-      // フォームを閉じたいとき
-      $(".display-none").on("click", function () {
-        $("#create-form").hide();
-        $("#update-form").hide();
-      });
-    </script>
-  </body>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
